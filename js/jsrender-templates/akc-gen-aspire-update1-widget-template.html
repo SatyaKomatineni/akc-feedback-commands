@@ -1,0 +1,63 @@
+<!-- 
+*************************************************
+* widget template: gen-aspire-update1-server-widget
+* div style class prefix: 
+* filename: akc-gen-aspire-update1-widget-template.html
+*
+* Arguments: 
+*   requestname
+*   moduletag
+*   modulename
+*   type (simple|multi)
+*   successurl
+*   failureurl
+* urls:
+*   /item/4814
+*
+* Sample text follows
+<div class="akc_expand1 akc_expand_hide" type="GenerateAspireUpdate1ClientWidget">
+<script type="text">
+    <requestname>SatShowTestsURL</requestname>
+    <modulename>sat-scoring-app</modulename>
+    <moduletag>Sat</moduletag>
+    <type>simple</type>
+    <updateargs>x,y,z</updateargs>
+    <redirectargs>a,b,c</redirectargs>
+    <successurl>ShowTestURL</successurl>
+    <failureurl>ShowTestURL</failureurl>
+</script>
+</div> 
+*
+* Sample text ends
+*************************************************
+-->
+
+<div class="akc-gen-widget-div akc-aspire-code-div">
+<pre><code> 
+
+###################################
+# {{:requestname}}: 
+# args: {{:updateargs}}
+# redirect url args: {{:redirectargs}}
+# on success: {{:successurl}}
+# on failure: {{:successurl}}&error=true
+###################################
+request.{{:requestname}}.classname=com.ai.db.DBRequestExecutor2
+request.{{:requestname}}.db=reportsdb
+request.{{:requestname}}.query_type=update
+request.{{:requestname}}.stmt=\\\nsome-sql-statement
+
+request.{{:requestname}}.redirectURL=\\\n/akc/display?url={{:successurl}}&amp;args={{:redirectargs}}
+request.updateRequest.failureRedirectURL=\\\n/akc/display?url={{:failureurl}}&amp;args={{:redirectargs}}&amp;result=error
+</code></pre>
+
+<!-- 
+*************************************************
+* Begin the supplementary stuff
+*************************************************
+-->
+<p>You can use this <a href="/akc/display?url=DisplayNoteIMPURL&reportId=603&downerUserId=aspire">url to know more about aspire updates</a></p>
+<p>You can also make use this <a href="/akc/servlet/DisplayServlet?url=NotesIMPTitlesURL&ownerUserId=aspire&folderId=102&folderowner=aspire&order_by_format=news">Advanced aspire notes</a></p>
+<p>If you have permissions you can <a href="/akc/display?url=DisplayNoteIMPURL&reportId=4824&downerUserId=satya">see and update</a> this template</p>
+<p>If you just want to <a href="/akc/display?url=DisplayNoteBodyURL&reportId=4824&downerUserId=satya">see the template</a></p>
+</div>

@@ -1,0 +1,8 @@
+
+//An example of a URL for a file
+http://drive.google.com/uc?id=0B_0Nhmj8ghVyMFlSSmhQWGhabkU
+
+http://drive.google.com/uc?id=
+
+//what a share looks like on google drive
+https://drive.google.com/open?id=1dmTDZrfnlbubxaRFSH21o2A3_TIsVvo_

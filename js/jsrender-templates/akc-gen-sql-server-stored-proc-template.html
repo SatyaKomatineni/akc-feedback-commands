@@ -1,0 +1,86 @@
+<!-- 
+*************************************************
+* widget template: gen-sql-server-stored-proc-widget
+* div style class prefix: gsssp-, cwdiv
+* filename: akc-gen-sql-server-stored-proc-template.html
+*
+* Arguments: 
+*   procname
+*   attribtues(name, type)
+*   comment
+*   stmt
+*
+* urls:
+*   this item is at: /item/4836
+*   The related .js file is at: 
+*
+* Also see:
+*
+*************************************************
+-->
+
+<div class="cwdiv akc-gsssp-maindiv">
+<!-- 
+*************************************************
+* Stored proc
+*************************************************
+-->
+<h3>Creating the stored proc: {{:procname}}</h3>
+
+<pre><code> 
+/* 
+*************************************************
+* {{:procname}}
+* {{:comment}}
+*************************************************
+*/
+USE [your-database-name-goes-here. ex: test]
+GO
+
+/*
+****************************************************
+* Drop the proc
+****************************************************
+*/
+if exists (select * from sysobjects 
+    where id = object_id(N'[dbo].[{{:procname}}]') 
+    and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[{{:procname}}]
+GO
+
+/*
+****************************************************
+* Create the proc
+****************************************************
+*/
+CREATE PROCEDURE dbo.{{:procname}}
+{{for attributes}}
+    @{{:name}} {{:type}},
+{{/for}}
+    @ownerUserId varchar(50)
+as begin
+
+{{:stmt}}
+
+/*
+****************************************************
+* End of the proc
+****************************************************
+*/
+end
+
+/* End of the proc and go */
+go
+</code></pre>
+
+
+<!-- 
+*************************************************
+* Begin the supplementary stuff
+*************************************************
+-->
+
+<p>You can also make use this <a href="/akc/servlet/DisplayServlet?url=NotesIMPTitlesURL&downerUserId=satya&folderId=19&folderowner=satya&order_by_format=news">database knowledge folder</a></p>
+<p>If you have permissions you can <a href="/akc/display?url=DisplayNoteIMPURL&reportId=4836&downerUserId=satya">see and update</a> this template</p>
+<p>If you just want to <a href="/akc/display?url=DisplayNoteBodyURL&reportId=4836&downerUserId=satya">see the template</a></p>
+</div>

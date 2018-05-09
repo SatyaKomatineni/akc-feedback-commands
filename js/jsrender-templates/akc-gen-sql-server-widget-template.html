@@ -1,0 +1,300 @@
+<!-- 
+*************************************************
+* widget template: gen-sql-server-widget
+* div style class prefix: gssw-
+* filename: akc-gen-sql-server-widget-template.html
+*
+* Arguments: 
+*   classname
+*   attribtues(name, type)
+* urls:
+*   /item/4807
+*************************************************
+-->
+
+<div class="akc-gssw-maindiv">
+<pre><code> 
+/*
+***********************************************************************
+* drop_create_t_{{:classname}}.sql
+* tablename: t_{{:classname}}
+*
+* Goal:
+* 
+* Indexes:
+* ***************
+* Document your indexes here
+* 
+***********************************************************************
+*/
+USE [your-database-name-goes-here. ex: test]
+GO
+
+/* You may have to drop your indexes if they exist for this table */
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[t_{{:classname}}s]') AND type in (N'U'))
+DROP TABLE [dbo].[t_{{:classname}}s]
+GO
+
+CREATE TABLE [dbo].[t_{{:classname}}s](
+    [f_{{:classname}}_id] [int] IDENTITY(1,1) NOT NULL,
+{{for attributes}}     
+    [f_{{:name}}] [{{:type}}] NOT NULL,
+{{/for}}    
+    [f_ownerUserid] [varchar](50) NOT NULL,
+    [f_created_by] [varchar](50) NOT NULL,
+    [f_created_on] [datetime] NOT NULL,
+    [f_last_updated_by] [varchar](50) NOT NULL,
+    [f_last_updated_on] [datetime] NOT NULL,
+{{if pk}}    
+    CONSTRAINT [PK_t_{{:classname}}s] PRIMARY KEY CLUSTERED ([f_{{:pk}}] ASC)
+    WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY],
+{{/if}}    
+    constraint IX_t_{{:classname}}s unique nonclustered (f_{{:classname}}_id asc)
+) ON [PRIMARY]
+
+GO
+</code></pre>
+
+<h3>Special instructions</h3>
+<p class="pending">
+Don't forget to set your primary keys and other indexes. 
+Once you do that you may want your database tools to regenrate the create sql for the entity. 
+Doing so will transport that table across nicely.
+</p>
+
+<!-- 
+*************************************************
+* Better class sructure
+*************************************************
+-->
+<h3>Better class structure for easy documentation</h3>
+<pre><code>
+t_{{:classname}} {
+{{for attributes}}
+  {{:name}}
+{{/for}}
+}
+</code></pre>
+
+<!-- 
+*************************************************
+* Better Java Class sructure
+*************************************************
+-->
+<h3>Better class structure for easy documentation</h3>
+<pre><code>
+public class {{:classname}} {
+  public int f_{{:classname}}_id;
+{{for attributes}}
+    public {{:type}} f_{{:name}};
+{{/for}}
+    public String f_ownerUserId;
+    public String f_created_by;
+    public Date f_created_on;
+    public String f_last_updated_by;
+    public Date f_last_updated_on;
+}
+</code></pre>
+
+<!-- 
+*************************************************
+* Quick insert statement
+*************************************************
+-->
+<h3>Quick Insert statement</h3>
+<pre><code>
+use [your-database]
+go
+
+set quoted_identifier off
+go
+
+insert into t_{{:classname}}s (
+{{for attributes}}
+f_{{:name}},
+{{/for}}
+f_ownerUserId,
+f_created_by,
+f_created_on,
+f_last_updated_by,
+f_last_updated_on
+)
+values (
+{{for attributes}}
+{{:name}},
+{{/for}}
+"satya",
+"satya",
+getDate(),
+"satya",
+getDate()
+)
+
+go
+</code></pre>
+
+<!-- 
+*************************************************
+* Stored proc to create the table
+*************************************************
+-->
+<h3>Creating the stored proc: sp_DropCreate_{{:classname}}s</h3>
+<pre><code> 
+/*
+***********************************************************************
+* drop_create_t_{{:classname}}.sql
+* tablename: t_{{:classname}}
+*
+* Goal:
+* 
+* Indexes:
+* ***************
+* Document your indexes here
+* 
+***********************************************************************
+*/
+USE [your-database-name-goes-here. ex: test]
+GO
+
+/*
+****************************************************
+* Drop the proc
+****************************************************
+*/
+if exists (select * from sysobjects 
+    where id = object_id(N'[dbo].[sp_DropCreate_{{:classname}}s]') 
+    and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[sp_DropCreate_{{:classname}}s]
+GO
+
+/*
+****************************************************
+* Create the proc
+****************************************************
+*/
+CREATE PROCEDURE dbo.sp_DropCreate_{{:classname}}s
+as begin
+
+/*
+****************************************************
+* Drop the table
+****************************************************
+*/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[t_{{:classname}}s]') AND type in (N'U'))
+DROP TABLE [dbo].[t_{{:classname}}s]
+
+/*
+****************************************************
+* Create the table
+****************************************************
+*/
+CREATE TABLE [dbo].[t_{{:classname}}s](
+    [f_{{:classname}}_id] [int] IDENTITY(1,1) NOT NULL,
+{{for attributes}}     
+    [f_{{:name}}] [{{:type}}] NOT NULL,
+{{/for}}    
+    [f_ownerUserid] [varchar](50) NOT NULL,
+    [f_created_by] [varchar](50) NOT NULL,
+    [f_created_on] [datetime] NOT NULL,
+    [f_last_updated_by] [varchar](50) NOT NULL,
+    [f_last_updated_on] [datetime] NOT NULL,
+{{if pk}}    
+    CONSTRAINT [PK_t_{{:classname}}s] PRIMARY KEY CLUSTERED ([f_{{:pk}}] ASC)
+    WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+{{/if}}    
+    constraint IX_t_{{:classname}}s unique nonclustered (f_{{:classname}}_id asc)
+) ON [PRIMARY]
+
+/*
+****************************************************
+* End of the proc
+****************************************************
+*/
+end
+
+/* End of the proc and go */
+Go
+
+/* 
+* use sp_help sp_DropCreate{{:classname}}s
+* to locate your procedure
+*/
+</code></pre>
+
+<!-- 
+*************************************************
+* End Stored proc to create the table
+* Begin Insert Stored proc
+*************************************************
+-->
+<h3>Stored Proc Insert statement</h3>
+
+<pre><code>
+/*
+****************************************************
+* sp_insert_{{:classname}}
+****************************************************
+*/
+use test
+go
+
+/*
+****************************************************
+* Drop the proc
+****************************************************
+*/
+if exists (select * from sysobjects 
+    where id = object_id(N'[dbo].[sp_insert_{{:classname}}]') 
+    and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+drop procedure [dbo].[sp_insert_{{:classname}}]
+GO
+
+/*
+****************************************************
+* Create the proc
+****************************************************
+*/
+CREATE PROCEDURE dbo.sp_insert_{{:classname}}
+{{for attributes}}
+    @{{:name}} {{:type}},
+{{/for}}
+    @ownerUserId
+as begin
+
+insert into t_{{:classname}}s (
+{{for attributes}}
+f_{{:name}},
+{{/for}}
+f_ownerUserId,
+f_created_by,
+f_created_on,
+f_last_updated_by,
+f_last_updated_on
+)
+values (
+{{for attributes}}
+@{{:name}},
+{{/for}}
+@ownerUserId,
+@ownerUserId,
+getDate(),
+@ownerUserId,
+getDate()
+)
+end
+</code></pre>
+
+<!-- 
+*************************************************
+* End Insert Stored proc to insert into the table
+* Begin the supplementary stuff
+*************************************************
+-->
+
+<p>You can also make use this <a href="/akc/servlet/DisplayServlet?url=NotesIMPTitlesURL&downerUserId=satya&folderId=19&folderowner=satya&order_by_format=news">database knowledge folder</a></p>
+<p>If you have permissions you can <a href="/akc/display?url=DisplayNoteIMPURL&reportId=4807&downerUserId=satya">see and update</a> this template</p>
+<p>If you just want to <a href="/akc/display?url=DisplayNoteBodyURL&reportId=4807&downerUserId=satya">see the template</a></p>
+</div>

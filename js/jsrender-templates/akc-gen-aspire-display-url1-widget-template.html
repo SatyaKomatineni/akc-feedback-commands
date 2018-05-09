@@ -1,0 +1,88 @@
+<!-- 
+*************************************************
+* widget template: gen-aspire-display-url1-server-widget
+* div style class prefix: 
+* filename: akc-gen-aspire-display-url1-widget-template.html
+*
+* Arguments: 
+*   urlname
+*   module-tag
+*   module-name
+*   html-filename
+* urls:
+*   /item/4814
+*
+* Sample text follows
+<div class="akc_expand1 akc_expand_hide" type="GenerateAspireDisplayURL1ClientWidget">
+<script type="text">
+    <urlname>SatShowTestsURL</urlname>
+    <modulename>sat-scoring-app</modulename>
+    <moduletag>Sat</module-tag>
+    <htmlfilename>sat-show-tests-url.html</htmlfilename>
+    <loopname>someloop</loopname>
+</script>
+</div> 
+*
+* Sample text ends
+*************************************************
+-->
+
+<div class="akc-gen-widget-div akc-aspire-code-div">
+<pre><code> 
+
+###################################
+# {{:urlname}}: Inner Master page version
+# args: none
+# ex: /akc/display?url={{:urlname}}
+#     /akc/display?url={{:urlname}}&aspire_output_format=object-xml
+###################################
+
+{{:urlname}}=aspire:\\\\reports\\\\{{:modulename}}\\\\{{:htmlfilename}}
+{{:urlname}}.dataRequestName={{:urlname}}DataRequest
+{{:urlname}}.masterPageRequestName=GetMasterPage
+{{:urlname}}.masterPageURL=captestURL2
+
+
+#To help aspire_output_format=xml
+#{{:urlname}}DataRequest.loopnames=abc,xyz
+
+#To eliminate html code tied to empty loops
+#{{:urlname}}DataRequest.abc.eliminateLoop=yes
+#{{:urlname}}DataRequest.xyz.eliminateLoop=yes
+
+#You need this
+request.{{:urlname}}DataRequest.className=com.ai.htmlgen.DBHashTableFormHandler1
+
+#Single Main Request name
+request.{{:urlname}}DataRequest.maindatarequest.classname=com.ai.db.DBRequestExecutor2
+request.{{:urlname}}DataRequest.maindatarequest.db=reportsDB
+request.{{:urlname}}DataRequest.maindatarequest.stmt=\\\n
+select * from sometable\\\n
+where 1=1\\\n
+and c1=value1
+
+#loop request for {{:loopname}}
+request.{{:urlname}}DataRequest.{{:loopname}}.class_request.className=com.ai.htmlgen.GenericTableHandler6
+request.{{:urlname}}DataRequest.{{:loopname}}.query_request.className=com.ai.db.DBRequestExecutor2
+request.{{:urlname}}DataRequest.{{:loopname}}.query_request.db=reportsDB
+request.{{:urlname}}DataRequest.{{:loopname}}.query_request.stmt=sp_getTagsForFolder {folderId}, {profile_user.quote}
+
+#Multiple main request
+request.{{:urlname}}DataRequest.className=com.ai.htmlgen.DBHashTableFormHandler1
+request.{{:urlname}}DataRequest.maindatarequest.classname=com.ai.db.DBPreTranslateArgsMultiRequestExecutor1
+request.{{:urlname}}DataRequest.maindatarequest.db=reportsDB
+request.{{:urlname}}DataRequest.maindatarequest.request.1={{:urlname}}DataRequest.Request1Name
+request.{{:urlname}}DataRequest.maindatarequest.request={{:urlname}}DataRequest.FinalRequestName
+
+</code></pre>
+
+<!-- 
+*************************************************
+* Begin the supplementary stuff
+*************************************************
+-->
+
+<p>You can also make use this <a href="/akc/servlet/DisplayServlet?url=NotesIMPTitlesURL&downerUserId=satya&folderId=19&folderowner=satya&order_by_format=news">database knowledge folder</a></p>
+<p>If you have permissions you can <a href="/akc/display?url=DisplayNoteIMPURL&reportId=4814&downerUserId=satya">see and update</a> this template</p>
+<p>If you just want to <a href="/akc/display?url=DisplayNoteBodyURL&reportId=4814&downerUserId=satya">see the template</a></p>
+</div>

@@ -1,0 +1,32 @@
+<!-- 
+*************************************************
+* widget template: gen-java-widget
+* div style class prefix: gjw-
+* filename: akc-gen-java-widget-template.html
+* Fixed params:
+*   width: 270
+*   height:65
+*   background:gray
+*   various colors
+*
+* Arguments: 
+*   classname
+*   attribtues(name, type)
+* urls:
+*   /item/4804
+*************************************************
+-->
+
+<div>
+<h3>Auto Generated Code for Class: {{:classname}}</h3>
+<pre><code class="akc-autogen akc-autogen-java">
+public class {{:classname}} {
+{{for attributes}}
+   {{:type}} {{:name}};
+{{/for}}
+}
+</code></pre>
+
+<p>If you have permissions you can <a href="/akc/display?url=DisplayNoteIMPURL&reportId=4804&downerUserId=satya">see and update</a> this template</p>
+<p>If you just want to <a href="/akc/display?url=DisplayNoteBodyURL&reportId=4804&downerUserId=satya">see the template</a></p>
+</div>
