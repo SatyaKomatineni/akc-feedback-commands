@@ -1,0 +1,165 @@
+
+//*******************************************************
+//Goal:
+//*******************************************************
+Dynamically interpret non-html snippter as html content
+for exmaple. Rewrite
+
+<div command="GDLink">
+   subject: "My Special Google Drive Image"
+   body:https://drive.google.com/open?id=1dmTDZrfnlbubxaRFSH21o2A3_TIsVvo_ 
+</div>
+
+as
+
+<h2>My Special Google Drive Image</h2>
+<p><img src="https://drive.google.com/uc?id=1dmTDZrfnlbubxaRFSH21o2A3_TIsVvo_"/>
+</p>
+
+
+//*******************************************************
+//Here is the code
+//*******************************************************
+
+//Specify subject and body
+//Due to my specific need, I append my command to subject
+//Here the command is "gdlink" 
+var subject="My Special Google Drive Image|gdlink";
+var body = "https://drive.google.com/open?id=1dmTDZrfnlbubxaRFSH21o2A3_TIsVvo_";
+
+
+//Let a CommandIntepreter interpret the command "gdlink"
+var ci = new CommandInterpreter(subject,body);
+if (ci.errorMessage != "")
+{
+    console.log(ci.errorMessage);
+    return;
+}
+
+//there is no error
+console.log("New subject:" + ci.newSubject);
+//will print
+<h2>My Special Google Drive Image</h2>
+
+console.log("New body:" + ci.newAppendText);	
+//will print
+<p><img src="https://drive.google.com/uc?id=1dmTDZrfnlbubxaRFSH21o2A3_TIsVvo_"/>
+</p>
+
+//*******************************************************
+//Lets look at the CommandIntepreter
+//*******************************************************
+/**
+ * 
+ * @param {String} inSubject 
+ * @param {String} inAppendText 
+ */
+function CommandInterpreter(inSubject, inAppendText)
+{
+    //Variables to hold interpreted output
+	this.newSubject="";
+	this.newAppendText = "";
+	this.command="";
+	this.errorMessage="";
+	
+	var trimSubject = inSubject.trim();
+	var trimAppendText = inAppendText.trim();
+	
+	//See if a command is present
+	var subjectArray = inSubject.split("|");
+	if (subjectArray.length <= 1)
+	{
+		//there is no command
+		this.newSubject=trimSubject;
+		this.newAppendText = trimAppendText;
+		return;
+	}
+	//there is command
+	this.command = subjectArray[1];
+	this.newSubject = subjectArray[0];
+		
+	//there is command
+    //******************************************************
+    //Prepare to invoke the command dynamically
+    //assuming it is available only at run time
+    //******************************************************
+	commandfuncname = "yourPrefix_" + this.command + "Command";
+	var funcobject;
+	eval("funcobject = " + commandfuncname + ";");
+	if (typeof(funcobject) == "function")
+	{
+		//yourPrefix_linkCommand(this.command, this.newSubject,trimAppendText,this);
+		funcobject(this.command, this.newSubject,trimAppendText,this,inSubject,inAppendText);
+	}
+	else
+	{
+		this.errorMessage="Sorry, command not recognized:" + this.command;
+	}
+	return;
+}
+
+//*******************************************************
+//what is gdlink: You will write this function
+//This will be invoked dynamically by CommandIntepreter
+//This function will be supplied at run time
+//You may have a bucket of functions available
+//*******************************************************
+/**
+ * Google Drive link: gdlink
+ * 
+ * Converts from google drive image link
+ * https://drive.google.com/open?id=1dmTDZrfnlbubxaRFSH21o2A3_TIsVvo_
+ * 
+ * to blong publishable link
+ * https://drive.google.com/uc?id=1dmTDZrfnlbubxaRFSH21o2A3_TIsVvo_
+ * 
+ * ci: The CommandIntepreter object passed in
+ */
+function yourPrefix_gdlinkCommand(commandname, subject, body, ci
+    , completesubjectline
+    , completeBody)
+{
+    var gdriveSourceURL = body;
+
+    if (subject == "")
+    {
+     ci.errorMessage = "Subject is empty";
+     return;
+    }
+    if (gdriveSourceURL == "")
+    {
+     ci.errorMessage = "A google drive image url is required for this command";
+     return;
+    }
+    
+    //subject is there
+    //image url is there
+    var targetGoogleDriveBaseURL = "http://drive.google.com/uc?id=";
+    var sourceGoogleDriveBaseURL = "https://drive.google.com/open?id=";
+
+    var fileIdIndex = gdriveSourceURL.indexOf("id=");
+    if (fileIdIndex == -1)
+    {
+        //Cannot find the pattern
+     ci.errorMessage = "Does not match the google drive file open URL pattern";
+     return;
+    }
+    //pattern found
+	var fileId = gdriveSourceURL.substring(fileIdIndex + 3);
+	dalert(fileId);
+    if (fileId == "")
+    {
+        ci.errorMessage = "File id not found";
+        return;
+    }
+    //file id found
+    var targetGoogleDriveImageURL = targetGoogleDriveBaseURL + fileId;
+
+    //body exists
+    var finalBody = '<p><img src="' + targetGoogleDriveImageURL + '"/></p>';
+
+    ci.newSubject=subject;
+    ci.newAppendText = finalBody;
+    return;
+}
+
