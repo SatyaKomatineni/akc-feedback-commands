@@ -1,4 +1,7 @@
 
+
+var aspire_gslistCommand = require("./gslistCommand");
+
 module.exports.testCommandInterpreter = testCommandInterpreter;
 module.exports.CommandInterpreter = CommandInterpreter;
 module.exports.testSubjectBody = testSubjectBody;
@@ -70,7 +73,14 @@ function CommandInterpreter(inSubject, inAppendText)
 	dalert('recognized command:' + this.command);
 		
 	//there is command
-	commandfuncname = "aspire_" + this.command + "Command";
+    commandfuncname = "aspire_" + this.command + "Command";
+
+    //*************************************************
+    //See if this works
+    //This line is not there in original
+    //*************************************************
+    commandfuncname = commandfuncname + "." + commandfuncname;
+
 	var funcobject;
 	eval("funcobject = " + commandfuncname + ";");
 	dalert(typeof(funcobject));
