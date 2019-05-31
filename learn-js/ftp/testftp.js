@@ -3,9 +3,11 @@ const ftp = require("basic-ftp");
 const readenv = require("./readenv");
 const u = require("./ftputils");
 
-async function getNamesfromFtpLocation(ftpSiteName) {
+var readline = require('readline');
+
+async function getNamesfromFtpLocation(ftpSiteName, path) {
     const client = new ftp.Client()
-    client.ftp.verbose = true
+    client.ftp.verbose = false
     let dirListing = null;
     try {
         const ftpHostSpec = new readenv.createHostSpecFromEnv(ftpSiteName);
@@ -24,7 +26,16 @@ async function getNamesfromFtpLocation(ftpSiteName) {
 
         //wait to get a list of what the site has to offer
         console.log("wait for a list of files");
-        dirListing = await client.list();
+        if (u.isValid(path))
+        {
+            console.log(`Going after files in path: ${path}`)
+            dirListing = await client.list(path);
+        }
+        else
+        {
+            console.log(`Going after files in the root`)
+            dirListing = await client.list(path);
+        }
         //clsworkWithListings(dirListing);
     }
     catch(err) {
@@ -66,14 +77,66 @@ function workWithListings(ftpListingArray)
         return;
     }
     console.log("Number of directories/files :" + ftpListingArray.length);
+    //@param {FileInfo} elem
+    filenameArray = ftpListingArray.map((elem) => {
+        return elem.name
+    })
+    console.log(filenameArray);
 }
 
-async function printFtpListingsFor(ftpSiteName)
+async function printFtpListingsFor(ftpSiteName,path)
 {
     // {Promise<any>} dirListingPromise
     // {FileInfo[]} ftpListingArray 
-    let ftpListingArray = await getNamesfromFtpLocation(ftpSiteName);
+    let ftpListingArray = await getNamesfromFtpLocation(ftpSiteName, path);
     workWithListings(ftpListingArray);
 }
 
-printFtpListingsFor("someUnknownFtp");
+//printFtpListingsFor("someUnknownFtp");
+//printFtpListingsFor("wu1");
+//printFtpListingsFor("wu1", "/*052019");
+
+var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    terminal: false
+  });
+  
+
+console.log("rl > Type in a path:");
+rl.on('line', function (line) {
+if (isQuit(line) == true)
+{
+    console.log("Quitting")
+    rl.close();
+}
+else
+{
+    //Go ahead and process the line
+    processCommandline(line);
+    console.log("rl > Type in a path:");
+}
+});
+
+function isQuit(s)
+{
+const quitLine = s.trim().toLowerCase();
+if ( (quitLine == "q") || (quitLine == "quit"))
+{
+    return true;
+}
+return false;
+
+}
+
+function processCommandline(line)
+{
+    console.log(`Processing ${line}`)
+
+    let path = "";
+    if (u.isValid(line))
+    {
+        path = line;
+    }
+    printFtpListingsFor("wu1",path)
+}
