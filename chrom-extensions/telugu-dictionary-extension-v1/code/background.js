@@ -47,3 +47,6 @@ chrome.runtime.onInstalled.addListener(function() {
     console.log("Installing menu done")
  }
 );
+
+//Register callback
+chrome.contextMenus.onClicked.addListener(clicked)
