@@ -24,7 +24,7 @@
 1. Locate the zip file for this extension. 
 2. Its name is telugu-dictionary-v1.zip
 3. It is located at the same github location as this readme file
-4. [Here is the link to this zip file](./telugu-dictionary-v1.zip)
+4. [Here is the link to this zip file](./telugu-dictionary-extension-v1.zip)
 5. Follow the  insturctions below to install the downloaded code as a chrome extension
 
 # How to install any chrome extension from source code
