@@ -24,18 +24,36 @@
 1. Locate the zip file for this extension. 
 2. Its name is telugu-dictionary-v1.zip
 3. It is located at the same github location as this readme file
-4. [Here is the link to this zip file](./telugu-dictionary-extension-v1.zip)
+4. [Here is the link to this zip file](./telugu-dictionary-extension-v1.zip). Clicking on this link will not directly download the file. Github will take you to the next screen. You will find a download button here. This will download the file to the downloads directory of chrome.
 5. Follow the  insturctions below to install the downloaded code as a chrome extension
 
 # How to install any chrome extension from source code
+## Step 1: Download the Zip file
 1. Download the zip file
-2. Unzip into a directory
+2. Place the zip file in a directory like "c:\xyz\telugu-dictionary-extension-v1.zip"
+
+## Step 2: Unzip/Extract the zip to a directory
+3. in windows right click on it and "extract all".
+4. if you choose the default dir to unzip you will see "c:\xyz\telugu-dictionary-extension-v1\code"
+
+## Step 3: Go to Manage Extensions
 3. Go Manage extensions in chrome browser (you can type in the URL: chrome://extensions)
 4. Turn on Developer mode (top right)
+
+## Step 4: Install the extension
 5. choose "Load Unpacked" and point it to the unzipped directory in step 2
+6. This will load the extension and you can see it as one of the loaded extensions
+
+## Step 5: Verifying the installation
+1. Go to any webpage that has Telugu script on it
+2. [I suggest you visit this telugu dictionary page](http://www.andhrabharati.com/dictionary/index.php?w=%E0%B0%B2%E0%B0%B2%E0%B0%BF%E0%B0%A4)
+3. Double click on any telugu word
+4. Look for a menu called "Lookup T"
+5. You will be taken to the meaning of that word
 
 # How to debug if something went wrong with the extension
-tbd
+1. Try restarting the chrome browser by closing all chrome windows and opening again
+2. Send me an email
 
 # How to install it using Chrome Web Store
 1. This will soon be available
