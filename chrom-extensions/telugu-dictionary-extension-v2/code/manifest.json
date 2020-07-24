@@ -1,0 +1,14 @@
+{
+    "name": "Explore Telugu Words",
+    "version": "1.1",
+    "description": "Explore any telugu word on a web page using Andhrabharati.com/dictionary",
+    "manifest_version": 2,
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "permissions": [
+        "contextMenus",
+        "tabs"
+    ]
+}
