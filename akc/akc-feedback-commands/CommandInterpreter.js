@@ -1,6 +1,8 @@
 
 
 var aspire_gslistCommand = require("./gslistCommand");
+var aspire_gdlink2Command = require("./gdlink2");
+var aspire_gitimageCommand = require("./gitimage");
 
 module.exports.testCommandInterpreter = testCommandInterpreter;
 module.exports.CommandInterpreter = CommandInterpreter;

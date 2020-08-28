@@ -102,13 +102,13 @@ function aspire_getGoogleSearchURL(line)
 //*******************************************************
 function escapeSpecial(line)
 {
-var newline = line.replace(/</g,"&lt;");
-newline = newline.replace(/>/g,"&gt;");
-return newline;
+    var newline = line.replace(/</g,"&lt;");
+    newline = newline.replace(/>/g,"&gt;");
+    return newline;
 }
 
 function aspire_splitLines(body)
 {
-var lineArray = body.split('\n');
-return lineArray;
+    var lineArray = body.split('\n');
+    return lineArray;
 }
